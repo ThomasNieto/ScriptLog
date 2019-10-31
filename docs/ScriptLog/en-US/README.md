@@ -10,26 +10,26 @@ Locale: en-US
 
 ## Description
 
-{{ Fill in the Description }}
+A simple full featured script log file module.
 
 ## ScriptLog Cmdlets
 
 ### [Import-ScriptLog](Import-ScriptLog.md)
 
-{{ Fill in the Description }}
+Imports script log file.
 
 ### [Reset-ScriptLog](Reset-ScriptLog.md)
 
-{{ Fill in the Description }}
+Rotates and clears script log files.
 
 ### [Start-ScriptLog](Start-ScriptLog.md)
 
-{{ Fill in the Description }}
+Starts a script log file.
 
 ### [Stop-ScriptLog](Stop-ScriptLog.md)
 
-{{ Fill in the Description }}
+Stops a script log file.
 
 ### [Write-ScriptLog](Write-ScriptLog.md)
 
-{{ Fill in the Description }}
+Writes a message a script log file.
