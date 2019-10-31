@@ -1,0 +1,3 @@
+class ScriptLogInfo {
+    [FileInfo]$Path
+}
