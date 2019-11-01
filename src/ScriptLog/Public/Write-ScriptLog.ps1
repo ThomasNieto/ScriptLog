@@ -1,5 +1,8 @@
 function Write-ScriptLog {
-    [CmdletBinding()]
+    [CmdletBinding(
+        DefaultParameterSetName = 'Path'
+    )]
+    [OutputType([LogMessage])]
     param (
         [Parameter(
             Mandatory,
@@ -15,9 +18,19 @@ function Write-ScriptLog {
         [LogLevel]
         $Level = [LogLevel]::Information,
 
-        [Parameter()]
-        [Encoding]
-        $Encoding = [Encoding]::Default,
+        [Parameter(
+            Mandatory,
+            ParameterSetName = 'Path'
+        )]
+        [string]
+        $Path,
+
+        [Parameter(
+            Mandatory,
+            ParameterSetName = 'ScriptLogInfo'
+        )]
+        [ScriptLogInfo]
+        $ScriptLogInfo,
 
         [Parameter()]
         [switch]
@@ -29,7 +42,39 @@ function Write-ScriptLog {
     }
     
     process {
+        $dateTime = Get-Date
+        $logLevel = "[{0}]" -f $Level
         
+        switch ($PSCmdlet.ParameterSetName) {
+            'Path' {
+                $logFilePath = $Path
+            }
+
+            'ScriptLogInfo' {
+                $logFilePath = $ScriptLogInfo.Path
+            }
+        }
+
+        $logMessage = "[{0}] [{1,-13}] {2}" -f $dateTime.ToString($script:DATETIMEFORMAT), $logLevel, $Message
+        Add-Content -Value $logMessage -Path $logFilePath
+        
+        if ($PassThru) {
+            $logMessage = [LogMessage]::New()
+            $logMessage.TimeStamp = $dateTime
+            $logMessage.Message = $Message
+            $logMessage.Level = $Level
+            
+            if ($ScriptLogInfo) {
+                $logMessage.Invocation = $ScriptLogInfo
+            }
+            else {
+                $logInfo = [ScriptLogInfo]::New()
+                $logInfo.Path = $Path
+                $logMessage.Invocation = $logInfo
+            }
+
+            Write-Output -InputObject $logMessage
+        }
     }
     
     end {

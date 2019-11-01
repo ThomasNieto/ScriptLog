@@ -2,7 +2,7 @@ function Stop-ScriptLog {
     [CmdletBinding()]
     param (
         [Parameter()]
-        [string[]]
+        [string]
         $Path,
 
         [Parameter()]
