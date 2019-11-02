@@ -26,7 +26,7 @@ function ConvertFrom-ScriptLog {
                     $scriptProperty = @{ $Matches.Property = $Matches.Value }
                 }
                 elseif ($line -match '^(Property>\w+) = $') {
-                    $scriptProperty = $null
+                    $scriptProperty = @{ $Matches.Property = $null }
                 }
 
                 if ($scriptProperty['StartTime']) {
