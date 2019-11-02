@@ -55,8 +55,8 @@ function Write-ScriptLog {
             }
         }
 
-        $logMessage = "[{0}] [{1,-13}] {2}" -f $dateTime.ToString($script:DATETIMEFORMAT), $logLevel, $Message
-        Add-Content -Value $logMessage -Path $logFilePath
+        $logString = "[{0}] [{1,-13}] {2}" -f $dateTime.ToString($script:DATETIMEFORMAT), $logLevel, $Message
+        Add-Content -Value $logString -Path $logFilePath
         
         if ($PassThru) {
             $logMessage = [LogMessage]::New()
