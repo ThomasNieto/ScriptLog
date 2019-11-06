@@ -1,5 +1,5 @@
 using namespace System.Collections
-using module ScriptLog
+#using module ScriptLog
 
 class LogMessage {
     [datetime]$TimeStamp
