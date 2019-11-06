@@ -36,7 +36,7 @@ function Start-ScriptLog {
 
         [Parameter()]
         [System.Collections.IDictionary]
-        $ArgumentList,
+        $BoundParameters,
 
         [Parameter()]
         [switch]
