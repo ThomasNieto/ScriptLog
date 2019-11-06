@@ -22,10 +22,10 @@ function ConvertFrom-ScriptLog {
         
         foreach ($line in $String) {
             if ($line -match '^w+ = ') {
-                if ($line -match '^(Property>\w+) = (?Value>.+)$') {
+                if ($line -match '^(?<Property>\w+) = (?<Value>.+)$') {
                     $scriptProperty = @{ $Matches.Property = $Matches.Value }
                 }
-                elseif ($line -match '^(Property>\w+) = $') {
+                elseif ($line -match '^(?<Property>\w+) = $') {
                     $scriptProperty = @{ $Matches.Property = $null }
                 }
 
