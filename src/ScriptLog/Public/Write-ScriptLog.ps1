@@ -2,7 +2,7 @@ function Write-ScriptLog {
     [CmdletBinding(
         DefaultParameterSetName = 'Path'
     )]
-    [OutputType([LogMessage])]
+    #[OutputType([LogMessage])]
     param (
         [Parameter(
             Mandatory,
@@ -55,7 +55,7 @@ function Write-ScriptLog {
             }
         }
 
-        $logString = "[{0}] [{1,-13}] {2}" -f $dateTime.ToString($script:DATETIMEFORMAT), $logLevel, $Message
+        $logString = "[{0}] {1,-13} {2}" -f $dateTime.ToString($script:DATETIMEFORMAT), $logLevel, $Message
         Add-Content -Value $logString -Path $logFilePath
         
         if ($PassThru) {
@@ -64,6 +64,8 @@ function Write-ScriptLog {
             $logMessage.Message = $Message
             $logMessage.Level = $Level
             
+            #TODO: Fix invovation
+            <#
             if ($ScriptLogInfo) {
                 $logMessage.Invocation = $ScriptLogInfo
             }
@@ -72,6 +74,7 @@ function Write-ScriptLog {
                 $logInfo.Path = $Path
                 $logMessage.Invocation = $logInfo
             }
+            #>
 
             Write-Output -InputObject $logMessage
         }
