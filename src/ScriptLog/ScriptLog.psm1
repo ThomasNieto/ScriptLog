@@ -1,6 +1,6 @@
 # This file is only used to import module within src folder
 
-# This is required because the PreLoad.ps1 is in a subfolder and unable to find resource file
+# This is a workaround because the PreLoad.ps1 is in a subfolder and unable to find resource file
 Import-LocalizedData -BindingVariable LocalizedData -FileName ScriptLog.Resources.psd1
 
 if (Test-Path -Path .\Module\PreLoad.ps1) {
