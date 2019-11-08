@@ -3,16 +3,12 @@ Describe 'Write-ScriptLog' {
         $message = 'This is a test.'
         $path = Join-Path -Path TestDrive: -ChildPath 'infoLine.log'
 
-        Write-ScriptLog -Message $message -Path $path
+        $result = Write-ScriptLog -Message $message -Path $path -PassThru
         $content = Get-Content -Path $path
         
-        if ($content -match '\[(?<TimeStamp>.+)\] \[(?<Level>.+)\] (?<Message>.+)') {
-            $Matches['Message'] | Should -Be $message
-            $Matches['Level'] | Should -Be 'Information'
-            $Matches['TimeStamp'] -as [datetime] | Should -BeOfType System.DateTime
-        }
-        else {
-            throw 'Regex not working'
-        }
+        $content -match '\[(?<TimeStamp>.+)\] \[(?<Level>.+)\] (?<Message>.+)' | Should -BeTrue
+        $Matches['Message'] | Should -Be $message
+        $Matches['Level'] | Should -Be 'Information'
+        $Matches['TimeStamp'] -as [datetime] | Should -Be $result.TimeStamp
     }
 }
