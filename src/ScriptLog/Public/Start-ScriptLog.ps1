@@ -79,7 +79,7 @@ function Start-ScriptLog {
     }
 
     $header = @()
-    $header += Get-Padding -String $LocalizedData.ScriptLogStartHeader -PaddingCharacter $LocalizedData.HeaderDividerCharaceter
+    $header += Get-Padding -String $LocalizedData.ScriptLogStartHeader -PaddingCharacter $LocalizedData.DividerCharaceter
     
     $invocation = @{}
     $invocation['StartTime'] = Get-Date
@@ -123,7 +123,7 @@ function Start-ScriptLog {
         }
     }
 
-    $header += $LocalizedData.HeaderDividerCharaceter * $LocalizedData.HeaderLength
+    $header += $LocalizedData.DividerCharaceter * $LocalizedData.DividerLength
 
     Add-Content -Value $header -Path $Path
 

@@ -1,13 +1,13 @@
 # Localization data for en-US
 
 ConvertFrom-StringData -StringData @"
-    # Script Log Headers
+    # Script Log Blocks
     ScriptLogStartHeader    = [PowerShell Script Log Start]
     ScriptLogEndHeader      = [PowerShell Script Log End]
-    EnvironmentHeader       = [Environment Information]
+    EnvironmentHeader       = [PowerShell Environment]
     ScriptInvocationHeader  = [PowerShell Script Information]
-    HeaderLength            = 50
-    HeaderDividerCharaceter = -
+    DividerLength           = 50
+    DividerCharaceter       = -
 
     # Errors
     FileExistsNoClobber    = File '{0}' already exists and NoClobber was specified.
