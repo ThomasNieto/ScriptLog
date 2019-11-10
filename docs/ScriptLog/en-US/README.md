@@ -18,10 +18,6 @@ A simple full featured script log file module.
 
 Imports script log file.
 
-### [Reset-ScriptLog](Reset-ScriptLog.md)
-
-Rotates and clears script log files.
-
 ### [Start-ScriptLog](Start-ScriptLog.md)
 
 Starts a script log file.
