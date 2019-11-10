@@ -76,7 +76,7 @@ function Start-ScriptLog {
     }
 
     $header = @()
-    $header += Get-Padding -String $LocalizedData.ScriptLogStartHeader -PaddingCharacter $LocalizedData.DividerCharacter
+    $header += Get-Padding -String $LocalizedData.ScriptLogStartHeader
     
     $invocation = @{ }
     $invocation['StartTime'] = Get-Date
