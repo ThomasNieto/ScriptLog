@@ -43,7 +43,7 @@ This command starts a script log.
 
 ## PARAMETERS
 
-### -ArgumentList
+### -BoundParameters
 
 Specifies the PSBoundParameters of the script writing the parameters to invocation header.
 

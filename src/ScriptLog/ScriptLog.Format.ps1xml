@@ -9,7 +9,6 @@
                 <TableHeaders>
                     <TableColumnHeader>
                         <Label>TimeStamp</Label>
-                        <Width>19</Width>
                     </TableColumnHeader>
                     <TableColumnHeader>
                         <Label>Level</Label>
@@ -24,7 +23,6 @@
                         <TableColumnItems>
                             <TableColumnItem>
                                 <PropertyName>TimeStamp</PropertyName>
-                                <FormatString>{0:yyyy-MM-dd HH:mm:ss}</FormatString>
                             </TableColumnItem>
                             <TableColumnItem>
                                 <PropertyName>Level</PropertyName>
@@ -48,13 +46,51 @@
                         <ListItems>
                             <ListItem>
                                 <PropertyName>TimeStamp</PropertyName>
-                                <FormatString>{0:yyyy-MM-dd HH:mm:ss}</FormatString>
                             </ListItem>
                             <ListItem>
                                 <PropertyName>Level</PropertyName>
                             </ListItem>
                             <ListItem>
                                 <PropertyName>Message</PropertyName>
+                            </ListItem>
+                        </ListItems>
+                    </ListEntry>
+                </ListEntries>
+            </ListControl>
+        </View>
+        <View>
+            <Name>Default</Name>
+            <ViewSelectedBy>
+                <TypeName>ScriptLogInfo</TypeName>
+            </ViewSelectedBy>
+            <TableControl>
+                <TableHeaders>
+                    <TableColumnHeader>
+                        <Label>Path</Label>
+                    </TableColumnHeader>
+                </TableHeaders>
+                <TableRowEntries>
+                    <TableRowEntry>
+                        <TableColumnItems>
+                            <TableColumnItem>
+                                <PropertyName>Path</PropertyName>
+                            </TableColumnItem>
+                        </TableColumnItems>
+                    </TableRowEntry>
+                </TableRowEntries>
+            </TableControl>
+        </View>
+        <View>
+            <Name>Default</Name>
+            <ViewSelectedBy>
+                <TypeName>ScriptLogInfo</TypeName>
+            </ViewSelectedBy>
+            <ListControl>
+                <ListEntries>
+                    <ListEntry>
+                        <ListItems>
+                            <ListItem>
+                                <PropertyName>Path</PropertyName>
                             </ListItem>
                         </ListItems>
                     </ListEntry>
