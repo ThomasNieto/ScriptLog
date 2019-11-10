@@ -68,24 +68,12 @@
                     <TableColumnHeader>
                         <Label>Path</Label>
                     </TableColumnHeader>
-                    <TableColumnHeader>
-                        <Label>Retention</Label>
-                    </TableColumnHeader>
-                    <TableColumnHeader>
-                        <Label>MaximumFileSize</Label>
-                    </TableColumnHeader>
                 </TableHeaders>
                 <TableRowEntries>
                     <TableRowEntry>
                         <TableColumnItems>
                             <TableColumnItem>
                                 <PropertyName>Path</PropertyName>
-                            </TableColumnItem>
-                            <TableColumnItem>
-                                <PropertyName>Retention</PropertyName>
-                            </TableColumnItem>
-                            <TableColumnItem>
-                                <PropertyName>MaximumFileSize</PropertyName>
                             </TableColumnItem>
                         </TableColumnItems>
                     </TableRowEntry>
@@ -103,12 +91,6 @@
                         <ListItems>
                             <ListItem>
                                 <PropertyName>Path</PropertyName>
-                            </ListItem>
-                            <ListItem>
-                                <PropertyName>Retention</PropertyName>
-                            </ListItem>
-                            <ListItem>
-                                <PropertyName>MaximumFileSize</PropertyName>
                             </ListItem>
                         </ListItems>
                     </ListEntry>
