@@ -11,14 +11,14 @@ function Get-Padding {
 
         [Parameter()]
         [int]
-        $Width = 50,
+        $Width = $LocalizedData.DividerLength,
 
         [Parameter()]
         [int]
         $InitialPadding = 1,
 
         [Parameter()]
-        [int]
+        [string]
         $InitialPaddingCharacter = ' '
     )
     
