@@ -1,5 +1,8 @@
 function Start-ScriptLog {
-    [CmdletBinding(DefaultParameterSetName = 'Path')]
+    [CmdletBinding(
+        DefaultParameterSetName = 'Path',
+        HelpUri = 'https://link.thomasnieto.com/Start-ScriptLog'
+    )]
     [OutputType([PSObject])]
     param (
         [Parameter(
@@ -81,7 +84,7 @@ function Start-ScriptLog {
     $invocation = @{ }
     $invocation['StartTime'] = Get-Date
     $invocation['UserName'] = '{0}\{1}' -f [Environment]::UserDomainName, [Environment]::UserName
-    $invocation['Machine'] = [Environment]::MachineName
+    $invocation['ComputerName'] = [Environment]::MachineName
     $invocation['ProcessId'] = $PID
     
     foreach ($item in $invocation.GetEnumerator()) {

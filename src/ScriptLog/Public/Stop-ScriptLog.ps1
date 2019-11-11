@@ -2,7 +2,8 @@ function Stop-ScriptLog {
     [CmdletBinding(
         DefaultParameterSetName = 'Path',
         SupportsShouldProcess,
-        ConfirmImpact = 'Low'
+        ConfirmImpact = 'Low',
+        HelpUri = 'https://link.thomasnieto.com/Stop-ScriptLog'
     )]
     param (
         [Parameter(
