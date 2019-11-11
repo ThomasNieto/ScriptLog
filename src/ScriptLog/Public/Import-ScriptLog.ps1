@@ -1,8 +1,12 @@
 function Import-ScriptLog {
-    [CmdletBinding()]
-    [OutputType([LogMessage])]
+    [CmdletBinding(
+        DefaultParameterSetName = 'Path',
+        HelpUri = 'https://link.thomasnieto.com/Import-ScriptLog'
+    )]
+    #[OutputType([LogMessage])]
     param (
         [Parameter(
+            ParameterSetName = 'Path',
             Mandatory,
             ValueFromPipeline,
             ValueFromPipelineByPropertyName,
@@ -10,18 +14,22 @@ function Import-ScriptLog {
         )]
         [ValidateNotNullOrEmpty()]
         [string[]]
-        $Path
+        $Path,
+
+        [Parameter(
+            ParameterSetName = 'ScriptLogInfo',
+            Mandatory,
+            ValueFromPipeline,
+            ValueFromPipelineByPropertyName,
+            Position = 0
+        )]
+        [ScriptLogInfo]
+        $ScriptLogInfo
     )
     
-    begin {
-        
-    }
-    
     process {
-        
-    }
-    
-    end {
-        
+        $content = Get-Content -Path $Path
+        ConvertFrom-ScriptLog -String $content |
+        Write-Output
     }
 }
