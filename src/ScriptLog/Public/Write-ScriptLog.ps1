@@ -1,7 +1,7 @@
 function Write-ScriptLog {
     [CmdletBinding(
         DefaultParameterSetName = 'Path',
-        HelpUri = 'https://link.thomasnieto.com/Write-ScriptLog'
+        HelpUri = 'https://link.tnieto88.dev/Write-ScriptLog'
     )]
     #[OutputType([LogMessage])]
     param (

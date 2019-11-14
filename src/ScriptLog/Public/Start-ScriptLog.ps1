@@ -1,7 +1,7 @@
 function Start-ScriptLog {
     [CmdletBinding(
         DefaultParameterSetName = 'Path',
-        HelpUri = 'https://link.thomasnieto.com/Start-ScriptLog'
+        HelpUri = 'https://link.tnieto88.dev/Start-ScriptLog'
     )]
     [OutputType([PSObject])]
     param (

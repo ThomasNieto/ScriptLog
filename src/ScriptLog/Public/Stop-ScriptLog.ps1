@@ -3,7 +3,7 @@ function Stop-ScriptLog {
         DefaultParameterSetName = 'Path',
         SupportsShouldProcess,
         ConfirmImpact = 'Low',
-        HelpUri = 'https://link.thomasnieto.com/Stop-ScriptLog'
+        HelpUri = 'https://link.tnieto88.dev/Stop-ScriptLog'
     )]
     param (
         [Parameter(
