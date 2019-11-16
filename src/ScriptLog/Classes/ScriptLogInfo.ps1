@@ -1,7 +1,16 @@
-using namespace System.IO
 using namespace System.Collections
+using namespace System.IO
 
 class ScriptLogInfo {
     [FileInfo]$Path
-    [IDictionary]$Invocation
+    [string]$ScriptName
+    [string]$ScriptVersion
+    [FileInfo]$ScriptPath
+    [string]$UserName
+    [string]$ComputerName
+    [datetime]$StartTime
+    [datetime]$EndTime
+    [int]$ProcessId
+    [IDictionary]$PSEnvironment
+    [IDictionary]$BoundParameters
 }
