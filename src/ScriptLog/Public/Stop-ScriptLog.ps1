@@ -35,26 +35,29 @@ function Stop-ScriptLog {
 
     if (Test-Path -Path $Path) {
         if ($PSCmdlet.ShouldProcess($Path)) {
-            $invocation = @{ EndTime = (Get-Date) }
+            $endTime = Get-Date
             
             $footer = @()
             $footer += Get-Padding -String $LocalizedData.ScriptLogEndFooter
-            $footer += 'EndTime = {0}' -f $invocation['EndTime'].ToString($script:DATETIMEFORMAT)
+            $footer += 'EndTime = {0}' -f $endTime.ToString($script:DATETIMEFORMAT)
             $footer += $LocalizedData.DividerCharacter * $LocalizedData.DividerLength
             Add-Content -Value $footer -Path $Path
 
             if ($PassThru) {
                 if ($PSBoundParameters['ScriptLogInfo']) {
-                    $ScriptLogInfo.Invocation += $invocation
+                    $ScriptLogInfo.EndTime += $endTime
                     Write-Output -InputObject $ScriptLogInfo
                 }
                 else {
-                    $output = [ScriptLogInfo]@{
-                        Path       = $Path
-                        Invocation = $invocation
+                    $ScriptLogInfo = [ScriptLogInfo]@{
+                        Path          = $Path
+                        UserName      = '{0}\{1}' -f [Environment]::UserDomainName, [Environment]::UserName
+                        ComputerName  = [Environment]::MachineName
+                        ProcessId     = $PID
+                        PSEnvironment = $PSVersionTable
                     }
 
-                    Write-Output -InputObject $output
+                    Write-Output -InputObject $ScriptLogInfo
                 }
             }
         }
