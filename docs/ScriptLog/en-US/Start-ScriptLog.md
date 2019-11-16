@@ -1,7 +1,7 @@
 ---
 external help file: ScriptLog-help.xml
 Module Name: ScriptLog
-online version: https://link.thomasnieto.com/Start-ScriptLog
+online version: https://go.thomasnieto.com/Start-ScriptLog
 schema: 2.0.0
 ---
 
