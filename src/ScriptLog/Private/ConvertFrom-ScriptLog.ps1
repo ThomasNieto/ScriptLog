@@ -4,61 +4,67 @@ function ConvertFrom-ScriptLog {
     param (
         [Parameter(
             Mandatory,
-            ValueFromPipeline,
-            ValueFromPipelineByPropertyName,
             Position = 0
         )]
-        [string]
+        [string[]]
         $String
     )
     
-    begin {
+    $invocation = @{ }
+    $messageCache = @()
+    $dividerRegex = '^{0}' -f $LocalizedData.DividerCharacter
         
-    }
-    
-    process {
-        $scriptInfo = @{}
-        $messageCache = @()
-        
-        foreach ($line in $String) {
-            if ($line -match '^w+ = ') {
-                if ($line -match '^(?<Property>\w+) = (?<Value>.+)$') {
-                    $scriptProperty = @{ $Matches.Property = $Matches.Value }
-                }
-                elseif ($line -match '^(?<Property>\w+) = $') {
-                    $scriptProperty = @{ $Matches.Property = $null }
-                }
-
-                if ($scriptProperty['StartTime']) {
-                    if ($messageCache) {
-                        $scriptInfo = ConvertFrom-StringHashtable -Hashtable $scriptInfo
-                    }
-
-                    #TODO: Add invocation to all messages
-
-                    $scriptInfo = @{}
-                    $scriptInfo += $scriptProperty
-                }
-                elseif ($scriptProperty['EndTime']) {
-                    $scriptInfo += $scriptProperty
-                    
-                    if ($messageCache) {
-                        $scriptInfo = ConvertFrom-StringHastable -Hashtable $scriptInfo
-    
-                        #TODO: Add invocation to all messages
-                    }
-                }
-                else {
-                    $scriptInfo += $scriptProperty
-                }
-
-                
+    foreach ($line in $String) {
+        if ($line -match '^\w+ = ') {
+            if ($line -match '^(?<Property>\w+) = (?<Value>.+)$') {
+                $scriptProperty = @{ $Matches.Property = $Matches.Value }
             }
-            
+            elseif ($line -match '^(?<Property>\w+) = $') {
+                $scriptProperty = @{ $Matches.Property = $null }
+            }
+
+            if ($scriptProperty['StartTime']) {
+                if ($messageCache) {
+                    $logMessage.Invocation = $invocation
+                    $logMessage.Message = $messageCache -join [Environment]::NewLine
+                    Write-Output -InputObject $logMessage
+                    $messageCache = @()
+                }
+
+                $invocation = @{ }
+                $invocation += $scriptProperty
+            }
+            elseif ($scriptProperty['EndTime']) {
+                $invocation += $scriptProperty
+                    
+                if ($messageCache) {
+                    $logMessage.Invocation = $invocation
+                    $logMessage.Message = $messageCache -join [Environment]::NewLine
+                    Write-Output -InputObject $logMessage
+                    $messageCache = @()
+                }
+            }
+            else {
+                $invocation += $scriptProperty
+            }
         }
-    }
-    
-    end {
-        
+        elseif ($line -match '\[(?<TimeStamp>.+)\] \[(?<Level>.+)\]\s+(?<Message>.+)') {
+            if ($messageCache) {
+                $logMessage.Invocation = $invocation
+                $logMessage.Message = $messageCache -join [Environment]::NewLine
+                Write-Output -InputObject $logMessage
+                $messageCache = @()
+            }
+
+            $logMessage = [LogMessage]@{
+                TimeStamp = $Matches.TimeStamp
+                Level     = $Matches.Level
+            }
+
+            $messageCache += $Matches.Message
+        }
+        elseif ($messageCache -and -not ($line -match $dividerRegex)) {
+            $messageCache += $line
+        }
     }
 }
