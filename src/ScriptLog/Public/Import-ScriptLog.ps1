@@ -1,7 +1,7 @@
 function Import-ScriptLog {
     [CmdletBinding(
         DefaultParameterSetName = 'Path',
-        HelpUri = 'https://link.tnieto88.dev/Import-ScriptLog'
+        HelpUri = 'https://go.thomasnieto.com/Import-ScriptLog'
     )]
     #[OutputType([LogMessage])]
     param (
