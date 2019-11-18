@@ -5,17 +5,7 @@ class LogMessage {
     [datetime]$TimeStamp
     [string]$Message
     [LogLevel]$Level
-    [FileInfo]$Path
-    [string]$ScriptName
-    [string]$ScriptVersion
-    [FileInfo]$ScriptPath
-    [string]$UserName
-    [string]$ComputerName
-    [datetime]$StartTime
-    [datetime]$EndTime
-    [int]$ProcessId
-    [IDictionary]$PSEnvironment
-    [IDictionary]$BoundParameters
+    [ScriptLogInfo]$ScriptLogInfo
 
     [string] ToString() {
         return $this.Message
