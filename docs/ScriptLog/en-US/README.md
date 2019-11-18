@@ -16,16 +16,16 @@ A simple full featured script log file module.
 
 ### [Import-ScriptLog](Import-ScriptLog.md)
 
-Imports script log file.
+Imports script log into session.
 
 ### [Start-ScriptLog](Start-ScriptLog.md)
 
-Starts a script log file.
+Writes the script invocation information to log file.
 
 ### [Stop-ScriptLog](Stop-ScriptLog.md)
 
-Stops a script log file.
+Stops the script log.
 
 ### [Write-ScriptLog](Write-ScriptLog.md)
 
-Writes a message a script log file.
+Writes a message to the script log.

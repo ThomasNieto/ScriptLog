@@ -13,8 +13,16 @@ Stops the script log.
 
 ## SYNTAX
 
+### Path (Default)
+
 ```powershell
-Stop-ScriptLog [[-Path] <String[]>] [-PassThru] [<CommonParameters>]
+Stop-ScriptLog [-Path] <String> [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
+```
+
+### ScriptLogInfo
+
+```powershell
+Stop-ScriptLog [-ScriptLogInfo] <ScriptLogInfo> [-PassThru] [-WhatIf] [-Confirm] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -32,6 +40,22 @@ PS C:\> Stop-ScriptLog -Path C:\Temp\UpdateScript.log
 This command writes the script end block to the log file.
 
 ## PARAMETERS
+
+### -Confirm
+
+Prompts you for confirmation before running the cmdlet.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: cf
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
 
 ### -PassThru
 
@@ -54,12 +78,44 @@ Accept wildcard characters: False
 Specifies the path to the script log file.
 
 ```yaml
-Type: String[]
-Parameter Sets: (All)
+Type: String
+Parameter Sets: Path
 Aliases:
 
-Required: False
+Required: True
 Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScriptLogInfo
+
+Specifies the script log configuration to use.
+
+```yaml
+Type: ScriptLogInfo
+Parameter Sets: ScriptLogInfo
+Aliases:
+
+Required: True
+Position: 0
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -WhatIf
+
+Shows what would happen if the cmdlet runs. The cmdlet is not run.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases: wi
+
+Required: False
+Position: Named
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -80,3 +136,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[Start-ScriptLog]()
+
+[Write-ScriptLog]()
+
+[Import-ScriptLog]()

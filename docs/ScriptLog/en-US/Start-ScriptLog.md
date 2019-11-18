@@ -16,15 +16,15 @@ Writes the script invocation information to log file.
 ### Path (Default)
 
 ```powershell
-Start-ScriptLog [-Path] <String> [-ScriptName <String>] [-ScriptVersion <Version>] [-BoundParameters <IDictionary>]
- [-NoEnvironmentInfo] [-PassThru] [<CommonParameters>]
+Start-ScriptLog [[-Path] <String>] [-ScriptInfo <PSObject>] [-BoundParameters <IDictionary>]
+ [-NoEnvironmentInfo] [-NoClobber] [-Append] [-PassThru] [<CommonParameters>]
 ```
 
-### ScriptInfo
+### OutputDirectory
 
 ```powershell
-Start-ScriptLog [[-ScriptInfo] <PSObject>] [-BoundParameters <IDictionary>] [-NoEnvironmentInfo]
- [-PassThru] [<CommonParameters>]
+Start-ScriptLog [[-OutputDirectory] <String>] [-ScriptInfo <PSObject>] [-BoundParameters <IDictionary>]
+ [-NoEnvironmentInfo] [-NoClobber] [-Append] [-PassThru] [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -43,12 +43,45 @@ This command starts a script log.
 
 ## PARAMETERS
 
+### -Append
+
+Indicates that this command adds the new script log to the end of an existing file.
+
+```yaml
+Type: SwitchParameter
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### -BoundParameters
 
 Specifies the PSBoundParameters of the script writing the parameters to invocation header.
 
 ```yaml
 Type: IDictionary
+Parameter Sets: (All)
+Aliases:
+
+Required: False
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -NoClobber
+
+Indicates that this command will not overwrite of an existing file.
+By default, if a transcript file exists in the specified path, Start-ScriptLog overwrites the file without warning.
+
+```yaml
+Type: SwitchParameter
 Parameter Sets: (All)
 Aliases:
 
@@ -70,6 +103,23 @@ Aliases:
 
 Required: False
 Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -OutputDirectory
+
+Specifies a specific path and folder in which to save a transcript.
+The command automatically assigns the script log name.
+
+```yaml
+Type: String
+Parameter Sets: OutputDirectory
+Aliases:
+
+Required: False
+Position: 0
 Default value: None
 Accept pipeline input: False
 Accept wildcard characters: False
@@ -100,10 +150,10 @@ Type: String
 Parameter Sets: Path
 Aliases:
 
-Required: True
+Required: False
 Position: 0
 Default value: None
-Accept pipeline input: True (ByPropertyName)
+Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
@@ -113,38 +163,6 @@ Script information from `Test-ScriptFileInfo` cmdlet.
 
 ```yaml
 Type: PSObject
-Parameter Sets: ScriptInfo
-Aliases:
-
-Required: False
-Position: 0
-Default value: None
-Accept pipeline input: True (ByPropertyName)
-Accept wildcard characters: False
-```
-
-### -ScriptName
-
-Specifies the script name for the invocation header.
-
-```yaml
-Type: String
-Parameter Sets: (All)
-Aliases:
-
-Required: False
-Position: Named
-Default value: None
-Accept pipeline input: False
-Accept wildcard characters: False
-```
-
-### -ScriptVersion
-
-Specifies the script version for the invocation header.
-
-```yaml
-Type: Version
 Parameter Sets: (All)
 Aliases:
 
@@ -170,3 +188,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[Stop-ScriptLog]()
+
+[Write-ScriptLog]()
+
+[Import-ScriptLog]()
