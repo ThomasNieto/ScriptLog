@@ -10,55 +10,64 @@ function ConvertFrom-ScriptLog {
         $String
     )
     
-    $invocation = @{ }
     $messageCache = @()
     $dividerRegex = '^{0}' -f $LocalizedData.DividerCharacter
-        
+    $scriptLogInfoProperties = [ScriptLogInfo]::New() |
+    Get-Member -MemberType Property |
+    Select-Object -ExpandProperty Name
+
     foreach ($line in $String) {
         if ($line -match '^\w+ = ') {
             if ($line -match '^(?<Property>\w+) = (?<Value>.+)$') {
-                $scriptProperty = @{ $Matches.Property = $Matches.Value }
+                $propertyName = $Matches.Property
+                $propertyValue = $Matches.Value
             }
             elseif ($line -match '^(?<Property>\w+) = $') {
-                $scriptProperty = @{ $Matches.Property = $null }
+                $propertyName = $Matches.Property
+                $propertyValue = $null
             }
 
-            if ($scriptProperty['StartTime']) {
+            if ($propertyName -eq 'StartTime') {
                 if ($messageCache) {
-                    $logMessage.Invocation = $invocation
+                    #$logMessage.ScriptLogInfo = $scriptLogInfo
                     $logMessage.Message = $messageCache -join [Environment]::NewLine
                     Write-Output -InputObject $logMessage
                     $messageCache = @()
                 }
 
-                $invocation = @{ }
-                $invocation += $scriptProperty
+                $scriptLogInfo = [ScriptLogInfo]::New()
+                $scriptLogInfo.StartTime = $propertyValue
             }
-            elseif ($scriptProperty['EndTime']) {
-                $invocation += $scriptProperty
+            elseif ($propertyName -eq 'EndTime') {
+                $scriptLogInfo.EndTime = $propertyValue
                     
                 if ($messageCache) {
-                    $logMessage.Invocation = $invocation
+                    #$logMessage.ScriptLogInfo = $scriptLogInfo
                     $logMessage.Message = $messageCache -join [Environment]::NewLine
                     Write-Output -InputObject $logMessage
                     $messageCache = @()
+                    $scriptLogInfo = [ScriptLogInfo]::New()
                 }
             }
+            elseif ($propertyName -in $scriptLogInfoProperties) {
+                $scriptLogInfo.$propertyName = $propertyValue
+            }
             else {
-                $invocation += $scriptProperty
+                #$scriptLogInfo.PSEnvironment[$propertyName] = $propertyValue
             }
         }
         elseif ($line -match '\[(?<TimeStamp>.+)\] \[(?<Level>.+)\]\s+(?<Message>.+)') {
             if ($messageCache) {
-                $logMessage.Invocation = $invocation
+                #$logMessage.ScriptLogInfo = $scriptLogInfo
                 $logMessage.Message = $messageCache -join [Environment]::NewLine
                 Write-Output -InputObject $logMessage
                 $messageCache = @()
             }
 
             $logMessage = [LogMessage]@{
-                TimeStamp = $Matches.TimeStamp
-                Level     = $Matches.Level
+                TimeStamp     = $Matches.TimeStamp
+                Level         = $Matches.Level
+                ScriptLogInfo = $scriptLogInfo
             }
 
             $messageCache += $Matches.Message
