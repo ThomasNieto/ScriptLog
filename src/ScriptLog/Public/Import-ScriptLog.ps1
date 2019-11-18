@@ -3,7 +3,7 @@ function Import-ScriptLog {
         DefaultParameterSetName = 'Path',
         HelpUri = 'https://go.thomasnieto.com/Import-ScriptLog'
     )]
-    #[OutputType([LogMessage])]
+    [OutputType([LogMessage])]
     param (
         [Parameter(
             ParameterSetName = 'Path',
@@ -28,6 +28,10 @@ function Import-ScriptLog {
     )
     
     process {
+        if ($PSBoundParameters['ScriptLogInfo']) {
+            $Path = $ScriptLogInfo.Path.FullName
+        }
+        
         $content = Get-Content -Path $Path
         ConvertFrom-ScriptLog -String $content |
         Write-Output
