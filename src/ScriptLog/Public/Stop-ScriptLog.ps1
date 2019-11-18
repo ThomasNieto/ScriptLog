@@ -2,8 +2,10 @@ function Stop-ScriptLog {
     [CmdletBinding(
         DefaultParameterSetName = 'Path',
         SupportsShouldProcess,
-        ConfirmImpact = 'Low'
+        ConfirmImpact = 'Low',
+        HelpUri = 'https://go.thomasnieto.com/Stop-ScriptLog'
     )]
+    [OutputType([LogMessage])]
     param (
         [Parameter(
             ParameterSetName = 'Path',
@@ -20,7 +22,7 @@ function Stop-ScriptLog {
             Position = 0
         )]
         [ValidateNotNullOrEmpty()]
-        [PSObject]
+        [ScriptLogInfo]
         $ScriptLogInfo,
 
         [Parameter()]
@@ -31,29 +33,28 @@ function Stop-ScriptLog {
     if ($PSBoundParameters['ScriptLogInfo']) {
         $Path = $ScriptLogInfo.Path
     }
+    else {
+        $ScriptLogInfo = [ScriptLogInfo]::New($true, $false)
+        $ScriptLogInfo.Path = $Path
+    }
 
     if (Test-Path -Path $Path) {
         if ($PSCmdlet.ShouldProcess($Path)) {
-            $invocation = @{ EndTime = (Get-Date) }
+            $endTime = Get-Date
             
             $footer = @()
             $footer += Get-Padding -String $LocalizedData.ScriptLogEndFooter
-            $footer += 'EndTime = {0}' -f $invocation['EndTime'].ToString($script:DATETIMEFORMAT)
+            $footer += 'EndTime = {0}' -f $endTime.ToString($script:DATETIMEFORMAT)
             $footer += $LocalizedData.DividerCharacter * $LocalizedData.DividerLength
             Add-Content -Value $footer -Path $Path
 
             if ($PassThru) {
                 if ($PSBoundParameters['ScriptLogInfo']) {
-                    $ScriptLogInfo.Invocation += $invocation
+                    $ScriptLogInfo.EndTime += $endTime
                     Write-Output -InputObject $ScriptLogInfo
                 }
                 else {
-                    $output = [ScriptLogInfo]@{
-                        Path       = $Path
-                        Invocation = $invocation
-                    }
-
-                    Write-Output -InputObject $output
+                    Write-Output -InputObject $ScriptLogInfo
                 }
             }
         }

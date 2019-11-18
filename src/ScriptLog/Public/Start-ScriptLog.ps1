@@ -1,6 +1,11 @@
+using namespace System.Collections
+
 function Start-ScriptLog {
-    [CmdletBinding(DefaultParameterSetName = 'Path')]
-    [OutputType([PSObject])]
+    [CmdletBinding(
+        DefaultParameterSetName = 'Path',
+        HelpUri = 'https://go.thomasnieto.com/Start-ScriptLog'
+    )]
+    [OutputType([LogMessage])]
     param (
         [Parameter(
             ParameterSetName = 'Path',
@@ -24,7 +29,7 @@ function Start-ScriptLog {
         $ScriptInfo,
 
         [Parameter()]
-        [System.Collections.IDictionary]
+        [IDictionary]
         $BoundParameters,
 
         [Parameter()]
@@ -44,11 +49,20 @@ function Start-ScriptLog {
         $PassThru
     )
 
+    $scriptLogInfo = [ScriptLogInfo]::New($true, $true)
+    $scriptLogInfo.BoundParameters = $BoundParameters
+
+    if ($PSBoundParameters['ScriptInfo']) {
+        $scriptLogInfo.ScriptName = $ScriptInfo.Name
+        $scriptLogInfo.ScriptVersion = $ScriptInfo.Version
+        $scriptLogInfo.ScriptPath = $ScriptInfo.Path
+    }
+
     if (-not $PSBoundParameters['Path']) {
         # A random string is used to match Start-Transcript default file name
         $randomBytes = New-Object -TypeName Byte[] -ArgumentList 6
         [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($randomBytes)
-        $randomString = [convert]::ToBase64String($randomBytes) -replace '/', '_'
+        $randomString = [Convert]::ToBase64String($randomBytes) -replace '/', '_'
 
         if ($PSBoundParameters['ScriptInfo']) {
             $fileName = $LocalizedData.DefaultScriptFullName -f $ScriptInfo.Name, [Environment]::MachineName, $randomString, (Get-Date)
@@ -64,12 +78,14 @@ function Start-ScriptLog {
             $Path = Join-Path -Path ([Environment]::GetFolderPath('MyDocuments')) -ChildPath $fileName
         }
     }
+
+    $scriptLogInfo.Path = $Path
     
-    if ($NoClobber -and -not $Append -and (Test-Path -Path $Path)) {
+    if ($NoClobber -and -not $Append -and (Test-Path -Path $scriptLogInfo.Path)) {
         $paramWriteError = @{
-            Message      = ($LocalizedData.FileExistsNoClobber -f $Path)
+            Message      = ($LocalizedData.FileExistsNoClobber -f $scriptLogInfo.Path)
             Category     = 'ResourceExists'
-            TargetObject = $Path
+            TargetObject = $scriptLogInfo.Path
         }
         
         Write-Error @paramWriteError
@@ -77,14 +93,8 @@ function Start-ScriptLog {
 
     $header = @()
     $header += Get-Padding -String $LocalizedData.ScriptLogStartHeader
-    
-    $invocation = @{ }
-    $invocation['StartTime'] = Get-Date
-    $invocation['UserName'] = '{0}\{1}' -f [Environment]::UserDomainName, [Environment]::UserName
-    $invocation['Machine'] = [Environment]::MachineName
-    $invocation['ProcessId'] = $PID
-    
-    foreach ($item in $invocation.GetEnumerator()) {
+
+    foreach ($item in $scriptLogInfo.PSEnvironment.GetEnumerator()) {
         if ($item.Key -eq 'StartTime' -or $item.Key -eq 'EndTime') {
             $value = $item.Value.ToString($script:DATETIMEFORMAT)
         }
@@ -94,9 +104,6 @@ function Start-ScriptLog {
 
         $header += '{0} = {1}' -f $item.Key, $Value
     }
-
-    $invocation['Host'] += $Host.Name
-    $invocation += $PSVersionTable
 
     if (-not $NoEnvironmentInfo) {
         $header += Get-Padding -String $LocalizedData.EnvironmentHeader
@@ -112,17 +119,17 @@ function Start-ScriptLog {
     }
 
     if ($PSBoundParameters['ScriptInfo']) {
-        $invocation['ScriptName'] = $ScriptInfo.Name
-        $invocation['ScriptVersion'] = $ScriptInfo.Version
-        $invocation['ScriptPath'] = $ScriptInfo.Path
+        $scriptProperties = $scriptLogInfo |
+        Get-Member -Name Script* -MemberType Property |
+        Select-Object -ExpandProperty Name
         
-        $header += 'ScriptName = {0}' -f $ScriptName
-        $header += 'ScriptVersion = {0}' -f $ScriptVersion
-        $header += 'ScriptPath = {0}' -f $ScriptPath
+        foreach ($property in $scriptProperties) {
+            $header += '{0} = {1}' -f $property, $scriptLogInfo.$property
+        }
     }
 
     if ($PSBoundParameters['BoundParameters']) {
-        foreach ($item in $BoundParameters.GetEnumerator()) {
+        foreach ($item in $scriptLogInfo.BoundParameters.GetEnumerator()) {
             $key = 'ScriptParameter_{0}' -f $item.Key
             $invocation[$key] = $item.Value
 
@@ -133,18 +140,13 @@ function Start-ScriptLog {
     $header += $LocalizedData.DividerCharacter * $LocalizedData.DividerLength
 
     if ($Append) {
-        Add-Content -Value $header -Path $Path
+        Add-Content -Value $header -Path $scriptLogInfo.Path
     }
     else {
-        Set-Content -Value $header -Path $Path
+        Set-Content -Value $header -Path $scriptLogInfo.Path
     }
 
     if ($PassThru) {
-        $output = [ScriptLogInfo]@{
-            Path       = $Path
-            Invocation = $invocation
-        }
-
-        Write-Output -InputObject $output
+        Write-Output -InputObject $scriptLogInfo
     }
 }

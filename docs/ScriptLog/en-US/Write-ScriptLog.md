@@ -1,7 +1,7 @@
 ---
 external help file: ScriptLog-help.xml
 Module Name: ScriptLog
-online version:
+online version: https://go.thomasnieto.com/Write-ScriptLog
 schema: 2.0.0
 ---
 
@@ -13,8 +13,17 @@ Writes a message to the script log.
 
 ## SYNTAX
 
+### Path (Default)
+
 ```powershell
-Write-ScriptLog [-Message] <String> [-Level <LogLevel>] [-PassThru] [<CommonParameters>]
+Write-ScriptLog [-Message] <String> [-Level <LogLevel>] -Path <String> [-PassThru] [<CommonParameters>]
+```
+
+### ScriptLogInfo
+
+```powershell
+Write-ScriptLog [-Message] <String> [-Level <LogLevel>] -ScriptLogInfo <ScriptLogInfo> [-PassThru]
+ [<CommonParameters>]
 ```
 
 ## DESCRIPTION
@@ -82,6 +91,38 @@ Accept pipeline input: False
 Accept wildcard characters: False
 ```
 
+### -Path
+
+Specifies the path to the script log file.
+
+```yaml
+Type: String
+Parameter Sets: Path
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
+### -ScriptLogInfo
+
+Specifies the script log configuration to use.
+
+```yaml
+Type: ScriptLogInfo
+Parameter Sets: ScriptLogInfo
+Aliases:
+
+Required: True
+Position: Named
+Default value: None
+Accept pipeline input: False
+Accept wildcard characters: False
+```
+
 ### CommonParameters
 
 This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable, -InformationAction, -InformationVariable, -OutVariable, -OutBuffer, -PipelineVariable, -Verbose, -WarningAction, and -WarningVariable. For more information, see [about_CommonParameters](http://go.microsoft.com/fwlink/?LinkID=113216).
@@ -97,3 +138,9 @@ This cmdlet supports the common parameters: -Debug, -ErrorAction, -ErrorVariable
 ## NOTES
 
 ## RELATED LINKS
+
+[Start-ScriptLog]()
+
+[Stop-ScriptLog]()
+
+[Import-ScriptLog]()

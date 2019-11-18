@@ -1,11 +1,11 @@
 using namespace System.Collections
-#using module ScriptLog
+using namespace System.IO
 
 class LogMessage {
     [datetime]$TimeStamp
     [string]$Message
     [LogLevel]$Level
-    [IDictionary]$Invocation
+    [ScriptLogInfo]$ScriptLogInfo
 
     [string] ToString() {
         return $this.Message

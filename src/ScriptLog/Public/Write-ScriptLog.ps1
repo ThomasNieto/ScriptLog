@@ -1,8 +1,9 @@
 function Write-ScriptLog {
     [CmdletBinding(
-        DefaultParameterSetName = 'Path'
+        DefaultParameterSetName = 'Path',
+        HelpUri = 'https://go.thomasnieto.com/Write-ScriptLog'
     )]
-    #[OutputType([LogMessage])]
+    [OutputType([LogMessage])]
     param (
         [Parameter(
             Mandatory,
@@ -38,49 +39,38 @@ function Write-ScriptLog {
     )
     
     begin {
-        
+        if (-not $PSBoundParameters['ScriptLogInfo']) {
+            $ScriptLogInfo = [ScriptLogInfo]@{
+                UserName      = '{0}\{1}' -f [Environment]::UserDomainName, [Environment]::UserName
+                ComputerName  = [Environment]::MachineName
+                ProcessId     = $PID
+                PSEnvironment = $PSVersionTable
+            }
+
+            $ScriptLogInfo.PSEnvironment['Host'] = $Host.Name
+        }
     }
     
     process {
         $dateTime = Get-Date
         $logLevel = "[{0}]" -f $Level
         
-        switch ($PSCmdlet.ParameterSetName) {
-            'Path' {
-                $logFilePath = $Path
-            }
-
-            'ScriptLogInfo' {
-                $logFilePath = $ScriptLogInfo.Path
-            }
+        if ($PSBoundParameters['ScriptLogInfo']) {
+            $Path = $ScriptLogInfo.Path
         }
 
         $logString = "[{0}] {1,-13} {2}" -f $dateTime.ToString($script:DATETIMEFORMAT), $logLevel, $Message
-        Add-Content -Value $logString -Path $logFilePath
+        Add-Content -Value $logString -Path $Path
         
         if ($PassThru) {
-            $logMessage = [LogMessage]::New()
-            $logMessage.TimeStamp = $dateTime
-            $logMessage.Message = $Message
-            $logMessage.Level = $Level
+            $logMessage = [LogMessage]@{
+                TimeStamp     = $dateTime
+                Message       = $Message
+                Level         = $Level
+                ScriptLogInfo = $ScriptLogInfo
+            }
             
-            #TODO: Fix invovation
-            <#
-            if ($ScriptLogInfo) {
-                $logMessage.Invocation = $ScriptLogInfo
-            }
-            else {
-                $logInfo = [ScriptLogInfo]::New()
-                $logInfo.Path = $Path
-                $logMessage.Invocation = $logInfo
-            }
-            #>
-
             Write-Output -InputObject $logMessage
         }
-    }
-    
-    end {
-        
     }
 }
