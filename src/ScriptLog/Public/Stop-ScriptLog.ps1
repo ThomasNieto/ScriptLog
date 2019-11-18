@@ -5,6 +5,7 @@ function Stop-ScriptLog {
         ConfirmImpact = 'Low',
         HelpUri = 'https://go.thomasnieto.com/Stop-ScriptLog'
     )]
+    [OutputType([LogMessage])]
     param (
         [Parameter(
             ParameterSetName = 'Path',
@@ -21,7 +22,7 @@ function Stop-ScriptLog {
             Position = 0
         )]
         [ValidateNotNullOrEmpty()]
-        [PSObject]
+        [ScriptLogInfo]
         $ScriptLogInfo,
 
         [Parameter()]
@@ -31,6 +32,10 @@ function Stop-ScriptLog {
     
     if ($PSBoundParameters['ScriptLogInfo']) {
         $Path = $ScriptLogInfo.Path
+    }
+    else {
+        $ScriptLogInfo = [ScriptLogInfo]::New($true, $false)
+        $ScriptLogInfo.Path = $Path
     }
 
     if (Test-Path -Path $Path) {
@@ -49,14 +54,6 @@ function Stop-ScriptLog {
                     Write-Output -InputObject $ScriptLogInfo
                 }
                 else {
-                    $ScriptLogInfo = [ScriptLogInfo]@{
-                        Path          = $Path
-                        UserName      = '{0}\{1}' -f [Environment]::UserDomainName, [Environment]::UserName
-                        ComputerName  = [Environment]::MachineName
-                        ProcessId     = $PID
-                        PSEnvironment = $PSVersionTable
-                    }
-
                     Write-Output -InputObject $ScriptLogInfo
                 }
             }

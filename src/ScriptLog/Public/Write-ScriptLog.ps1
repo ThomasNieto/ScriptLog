@@ -3,7 +3,7 @@ function Write-ScriptLog {
         DefaultParameterSetName = 'Path',
         HelpUri = 'https://go.thomasnieto.com/Write-ScriptLog'
     )]
-    #[OutputType([LogMessage])]
+    [OutputType([LogMessage])]
     param (
         [Parameter(
             Mandatory,
@@ -39,7 +39,16 @@ function Write-ScriptLog {
     )
     
     begin {
-        
+        if (-not $PSBoundParameters['ScriptLogInfo']) {
+            $ScriptLogInfo = [ScriptLogInfo]@{
+                UserName      = '{0}\{1}' -f [Environment]::UserDomainName, [Environment]::UserName
+                ComputerName  = [Environment]::MachineName
+                ProcessId     = $PID
+                PSEnvironment = $PSVersionTable
+            }
+
+            $ScriptLogInfo.PSEnvironment['Host'] = $Host.Name
+        }
     }
     
     process {
@@ -58,34 +67,10 @@ function Write-ScriptLog {
                 TimeStamp     = $dateTime
                 Message       = $Message
                 Level         = $Level
-                Path          = $Path
+                ScriptLogInfo = $ScriptLogInfo
             }
-
-            if ($PSBoundParameters['ScriptLogInfo']) {
-                $logMessage.ScriptName = $ScriptLogInfo.ScriptName
-                $logMessage.ScriptVersion = $ScriptLogInfo.ScriptVersion
-                $logMessage.ScriptPath = $ScriptLogInfo.ScriptPath
-                $logMessage.BoundParameters = $ScriptLogInfo.BoundParameters
-                $logMessage.UserName = $ScriptLogInfo.UserName
-                $logMessage.ComputerName = $ScriptLogInfo.ComputerName
-                $logMessage.ProcessId = $ScriptLogInfo.ProcessId
-                $logMessage.PSEnvironment = $ScriptLogInfo.PSVersionTable
-                $logMessage.StartTime = $ScriptLogInfo.StartTime
-            }
-            else {
-                $logMessage.UserName = '{0}\{1}' -f [Environment]::UserDomainName, [Environment]::UserName
-                $logMessage.ComputerName = [Environment]::MachineName
-                $logMessage.ProcessId = $PID
-                $logMessage.PSEnvironment = $PSVersionTable
-            }
-
-            $logMessage.PSEnvironment['Host'] = $Host.Name
             
             Write-Output -InputObject $logMessage
         }
-    }
-    
-    end {
-        
     }
 }
