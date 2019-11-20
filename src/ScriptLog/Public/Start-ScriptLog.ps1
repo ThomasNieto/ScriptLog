@@ -107,9 +107,8 @@ function Start-ScriptLog {
 
     if (-not $NoEnvironmentInfo) {
         $header += Get-Padding -String $LocalizedData.EnvironmentHeader
-        $header += '{0} = {1}' -f 'Host', $Host.Name
-        
-        foreach ($item in $PSVersionTable.GetEnumerator()) {
+
+        foreach ($item in $scriptLogInfo.PSEnvironment.GetEnumerator()) {
             $header += '{0} = {1}' -f $item.Key, ($item.Value -join ', ')
         }
     }
