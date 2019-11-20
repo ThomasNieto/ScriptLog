@@ -21,7 +21,6 @@ function Stop-ScriptLog {
             Mandatory,
             Position = 0
         )]
-        [ValidateNotNullOrEmpty()]
         [ScriptLogInfo]
         $ScriptLogInfo,
 

@@ -94,22 +94,21 @@ function Start-ScriptLog {
     $header = @()
     $header += Get-Padding -String $LocalizedData.ScriptLogStartHeader
 
-    foreach ($item in $scriptLogInfo.PSEnvironment.GetEnumerator()) {
-        if ($item.Key -eq 'StartTime' -or $item.Key -eq 'EndTime') {
-            $value = $item.Value.ToString($script:DATETIMEFORMAT)
+    foreach ($property in 'StartTime', 'UserName', 'ComputerName', 'ProcessId') {
+        if ($property -eq 'StartTime' -or $property -eq 'EndTime') {
+            $value = $scriptLogInfo.$property.ToString($script:DATETIMEFORMAT)
         }
         else {
-            $value = $item.Value
+            $value = $scriptLogInfo.$property
         }
 
-        $header += '{0} = {1}' -f $item.Key, $Value
+        $header += '{0} = {1}' -f $property, $Value
     }
 
     if (-not $NoEnvironmentInfo) {
         $header += Get-Padding -String $LocalizedData.EnvironmentHeader
-        $header += '{0} = {1}' -f 'Host', $Host.Name
-        
-        foreach ($item in $PSVersionTable.GetEnumerator()) {
+
+        foreach ($item in $scriptLogInfo.PSEnvironment.GetEnumerator()) {
             $header += '{0} = {1}' -f $item.Key, ($item.Value -join ', ')
         }
     }
@@ -131,8 +130,6 @@ function Start-ScriptLog {
     if ($PSBoundParameters['BoundParameters']) {
         foreach ($item in $scriptLogInfo.BoundParameters.GetEnumerator()) {
             $key = 'ScriptParameter_{0}' -f $item.Key
-            $invocation[$key] = $item.Value
-
             $header += '{0} = {1}' -f $key, $item.Value
         }
     }

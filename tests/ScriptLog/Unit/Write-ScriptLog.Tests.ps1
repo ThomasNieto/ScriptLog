@@ -6,7 +6,7 @@ Describe 'Write-ScriptLog' {
         $result = Write-ScriptLog -Message $message -Path $path -PassThru
         $content = Get-Content -Path $path
         
-        $content -match '\[(?<TimeStamp>.+)\] \[(?<Level>.+)\]\s+(?<Message>.+)' | Should -BeTrue
+        $content -match '^\[(?<TimeStamp>.+)\] \[(?<Level>.+)\]\s+(?<Message>.+)' | Should -BeTrue
         $Matches['Message'] | Should -Be $message
         $Matches['Level'] | Should -Be 'Information'
         $Matches['TimeStamp'] -as [datetime] | Should -Be $result.TimeStamp

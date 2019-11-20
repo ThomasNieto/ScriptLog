@@ -40,14 +40,7 @@ function Write-ScriptLog {
     
     begin {
         if (-not $PSBoundParameters['ScriptLogInfo']) {
-            $ScriptLogInfo = [ScriptLogInfo]@{
-                UserName      = '{0}\{1}' -f [Environment]::UserDomainName, [Environment]::UserName
-                ComputerName  = [Environment]::MachineName
-                ProcessId     = $PID
-                PSEnvironment = $PSVersionTable
-            }
-
-            $ScriptLogInfo.PSEnvironment['Host'] = $Host.Name
+            $ScriptLogInfo = [ScriptLogInfo]($true, $false)
         }
     }
     
