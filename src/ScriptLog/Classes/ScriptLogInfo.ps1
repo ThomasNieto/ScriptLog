@@ -11,8 +11,8 @@ class ScriptLogInfo {
     [datetime]$StartTime
     [datetime]$EndTime
     [int]$ProcessId
-    [IDictionary]$PSEnvironment
-    [IDictionary]$BoundParameters
+    [IDictionary]$PSEnvironment = @{ }
+    [IDictionary]$BoundParameters = @{ }
 
     ScriptLogInfo() { }
 
