@@ -16,7 +16,7 @@ A simple full featured script log file module.
 
 ### [Import-ScriptLog](Import-ScriptLog.md)
 
-Imports script log into session.
+Imports script log into a table like structure.
 
 ### [Start-ScriptLog](Start-ScriptLog.md)
 

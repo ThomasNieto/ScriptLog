@@ -35,7 +35,7 @@ This command writes script information messages to the script log.
 ### Example 1
 
 ```powershell
-PS C:\> Write-ScriptLog -Message "Update successful"
+PS C:\> Write-ScriptLog -Message 'Update successful'
 ```
 
 This command writes a 'Update successful' message to the script log file.

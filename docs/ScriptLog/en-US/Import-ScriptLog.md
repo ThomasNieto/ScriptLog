@@ -9,7 +9,7 @@ schema: 2.0.0
 
 ## SYNOPSIS
 
-Imports script log into session.
+Imports a script log file into a table like structure.
 
 ## SYNTAX
 
@@ -27,14 +27,21 @@ Import-ScriptLog [-ScriptLogInfo] <ScriptLogInfo> [<CommonParameters>]
 
 ## DESCRIPTION
 
-{{ Fill in the Description }}
+This command parses a script log file into a table like structure.
+This allows for quick filtering of the data without having to open the file directly.
 
 ## EXAMPLES
 
 ### Example 1
 
 ```powershell
-PS C:\> Import-ScriptLog -Path C:\Temp\Script.log
+PS C:\> Import-ScriptLog -Path C:\Temp\MSI_Install.log
+
+TimeStamp              Level       Message
+---------              -----       -------
+11/19/2019 10:08:00 PM Information Started C:\Temp\installer.msi
+11/19/2019 10:08:15 PM Error       MSI install failed.
+11/19/2019 10:08:30 PM Information Deleted file C:\Temp\installer.msi
 ```
 
 This command imports the script log file parsing the contents.
@@ -59,7 +66,7 @@ Accept wildcard characters: False
 
 ### -ScriptLogInfo
 
-{{ Fill ScriptLogInfo Description }}
+Specifies the script log configuration to use.
 
 ```yaml
 Type: ScriptLogInfo
