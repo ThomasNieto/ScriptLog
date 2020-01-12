@@ -96,7 +96,7 @@ function Start-ScriptLog {
 
     foreach ($property in 'StartTime', 'UserName', 'ComputerName', 'ProcessId') {
         if ($property -eq 'StartTime' -or $property -eq 'EndTime') {
-            $value = $scriptLogInfo.$property.ToString($script:DATETIMEFORMAT)
+            $value = $scriptLogInfo.$property.ToString($script:DateTimeFormat)
         }
         else {
             $value = $scriptLogInfo.$property

@@ -43,7 +43,7 @@ function Stop-ScriptLog {
             
             $footer = @()
             $footer += Get-Padding -String $LocalizedData.ScriptLogEndFooter
-            $footer += 'EndTime = {0}' -f $endTime.ToString($script:DATETIMEFORMAT)
+            $footer += 'EndTime = {0}' -f $endTime.ToString($script:DateTimeFormat)
             $footer += $LocalizedData.DividerCharacter * $LocalizedData.DividerLength
             Add-Content -Value $footer -Path $Path
 

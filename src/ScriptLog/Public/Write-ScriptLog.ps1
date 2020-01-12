@@ -52,7 +52,7 @@ function Write-ScriptLog {
             $Path = $ScriptLogInfo.Path
         }
 
-        $logString = "[{0}] {1,-13} {2}" -f $dateTime.ToString($script:DATETIMEFORMAT), $logLevel, $Message
+        $logString = "[{0}] {1,-13} {2}" -f $dateTime.ToString($script:DateTimeFormat), $logLevel, $Message
         Add-Content -Value $logString -Path $Path
         
         if ($PassThru) {

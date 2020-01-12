@@ -2,21 +2,21 @@ using namespace System.Collections
 using namespace System.IO
 
 class ScriptLogInfo {
-    [FileInfo]$Path
-    [string]$ScriptName
-    [string]$ScriptVersion
-    [FileInfo]$ScriptPath
-    [string]$UserName
-    [string]$ComputerName
-    [datetime]$StartTime
-    [datetime]$EndTime
-    [int]$ProcessId
-    [IDictionary]$PSEnvironment = @{ }
-    [IDictionary]$BoundParameters = @{ }
+    [FileInfo] $Path
+    [string] $ScriptName
+    [string] $ScriptVersion
+    [FileInfo] $ScriptPath
+    [string] $UserName
+    [string] $ComputerName
+    [datetime] $StartTime
+    [datetime] $EndTime
+    [int] $ProcessId
+    [IDictionary] $PSEnvironment = @{ }
+    [IDictionary] $BoundParameters = @{ }
 
     ScriptLogInfo() { }
 
-    ScriptLogInfo([bool]$currentEnvironment, [bool]$currentTime) {
+    ScriptLogInfo([bool] $currentEnvironment, [bool] $currentTime) {
         if ($currentEnvironment) {
             $this.UserName = '{0}\{1}' -f [Environment]::UserDomainName, [Environment]::UserName
             $this.ComputerName = [Environment]::MachineName
