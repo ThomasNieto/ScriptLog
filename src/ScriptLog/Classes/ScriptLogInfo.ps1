@@ -8,8 +8,8 @@ class ScriptLogInfo {
     [FileInfo] $ScriptPath
     [string] $UserName
     [string] $ComputerName
-    [datetime] $StartTime
-    [datetime] $EndTime
+    [DateTime] $StartTime
+    [DateTime] $EndTime
     [int] $ProcessId
     [IDictionary] $PSEnvironment = @{ }
     [IDictionary] $BoundParameters = @{ }

@@ -2,7 +2,7 @@ using namespace System.Collections
 using namespace System.IO
 
 class LogMessage {
-    [datetime] $TimeStamp
+    [DateTime] $TimeStamp
     [string] $Message
     [LogLevel] $Level
     [ScriptLogInfo] $ScriptLogInfo
